@@ -4,7 +4,7 @@ import { Plus, Download, Upload, GripVertical, FileJson, FileSpreadsheet } from 
 import TodoForm from '../components/todo/TodoForm';
 import TodoList from '../components/todo/TodoList';
 import DraggableTodoList from '../components/todo/DraggableTodoList';
-import { CategoryFilter, StatusPriorityFilter, TagFilter } from '../components/todo/TodoFilter';
+import { CategoryFilter, StatusFilter, PriorityFilter, TagFilter } from '../components/todo/TodoFilter';
 import TodoSearch from '../components/todo/TodoSearch';
 import Modal from '../components/common/Modal';
 import Button from '../components/common/Button';
@@ -192,8 +192,9 @@ const HomePage = () => {
 
         {/* Right Sidebar - Status & Priority (Fixed width) */}
         <aside className="lg:col-span-3 order-3 lg:order-3">
-          <div className="lg:sticky lg:top-24">
-            <StatusPriorityFilter />
+          <div className="lg:sticky lg:top-24 space-y-6 intro-y">
+            <StatusFilter />
+            <PriorityFilter />
           </div>
         </aside>
       </div>

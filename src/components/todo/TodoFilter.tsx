@@ -68,104 +68,119 @@ const ColorPicker = ({ selectedColor, onSelect }: ColorPickerProps) => (
 );
 
 
-export const StatusPriorityFilter = () => {
-  const { filter, setFilter, clearFilters } = useTodoStore();
+//! Bölüm Başlığı ve Temizleme Butonu Bileşeni
+interface FilterSectionHeaderProps {
+  title: string;
+  onClear?: () => void;
+  hasActiveFilters?: boolean;
+}
 
-  // aktif filtre kontrolü - temizle butonu için
-  const hasActiveFilters =
-    (filter.status?.length ?? 0) > 0 ||
-    (filter.priority?.length ?? 0) > 0 ||
-    filter.categoryId;
+const FilterSectionHeader = ({ title, onClear, hasActiveFilters }: FilterSectionHeaderProps) => (
+  <div className="flex items-center justify-between mb-2">
+    <label className="block text-sm font-bold text-gray-800 dark:text-gray-200">
+      {title}
+    </label>
+    {hasActiveFilters && onClear && (
+      <button
+        onClick={onClear}
+        className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-1 text-xs text-red-500 font-medium"
+      >
+        <X size={12} />
+        Clear
+      </button>
+    )}
+  </div>
+);
+
+export const StatusFilter = () => {
+  const { filter, setFilter } = useTodoStore();
+  const hasActiveFilters = (filter.status?.length ?? 0) > 0;
 
   return (
-    <div className="bg-white/80 dark:bg-[#0a0a0a]/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 dark:border-amber-500/20 shadow-soft space-y-4">
-      <div className="flex items-center justify-between mb-2">
-        {/* Başlık kaldırıldı */}
-        <div />
-        {hasActiveFilters && (
-          <button onClick={clearFilters} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-1 text-xs text-red-500">
-            <X size={14} />
-            Clear
-          </button>
-        )}
-      </div>
-
-      {/* Status Filter */}
-      <div>
-        <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">
-          Status
-        </label>
-        <div className="flex flex-col gap-2">
-          {[
-            { value: TodoStatus.PENDING, label: 'Pending', icon: Clock, gradient: 'from-slate-400 to-slate-500', bg: 'bg-slate-100 dark:bg-slate-500/20', text: 'text-slate-700 dark:text-slate-300' },
-            { value: TodoStatus.IN_PROGRESS, label: 'In Progress', icon: Clock, gradient: 'from-blue-500 to-indigo-500', bg: 'bg-blue-100 dark:bg-blue-500/20', text: 'text-blue-700 dark:text-blue-300' },
-            { value: TodoStatus.COMPLETED, label: 'Completed', icon: CheckCircle, gradient: 'from-emerald-500 to-teal-500', bg: 'bg-emerald-100 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300' }
-          ].map(({ value, label, icon: Icon, gradient, bg, text }) => {
-            const isActive = filter.status?.includes(value);
-            return (
-              <button
-                key={value}
-                onClick={() => {
-                  const current = filter.status || [];
-                  setFilter({
-                    status: current.includes(value)
-                      ? current.filter((s) => s !== value)
-                      : [...current, value],
-                  });
-                }}
-                className={`
+    <div className="bg-white/80 dark:bg-[#0a0a0a]/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 dark:border-amber-500/20 shadow-soft">
+      <FilterSectionHeader
+        title="Status"
+        onClear={() => setFilter({ status: [] })}
+        hasActiveFilters={hasActiveFilters}
+      />
+      <div className="flex flex-col gap-2">
+        {[
+          { value: TodoStatus.PENDING, label: 'Pending', icon: Clock, gradient: 'from-slate-400 to-slate-500', bg: 'bg-slate-100 dark:bg-slate-500/20', text: 'text-slate-700 dark:text-slate-300' },
+          { value: TodoStatus.IN_PROGRESS, label: 'In Progress', icon: Clock, gradient: 'from-blue-500 to-indigo-500', bg: 'bg-blue-100 dark:bg-blue-500/20', text: 'text-blue-700 dark:text-blue-300' },
+          { value: TodoStatus.COMPLETED, label: 'Completed', icon: CheckCircle, gradient: 'from-emerald-500 to-teal-500', bg: 'bg-emerald-100 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300' }
+        ].map(({ value, label, icon: Icon, gradient, bg, text }) => {
+          const isActive = filter.status?.includes(value);
+          return (
+            <button
+              key={value}
+              onClick={() => {
+                const current = filter.status || [];
+                setFilter({
+                  status: current.includes(value)
+                    ? current.filter((s) => s !== value)
+                    : [...current, value],
+                });
+              }}
+              className={`
                   w-full px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-3
                   ${isActive
-                    ? `bg-gradient-to-r ${gradient} text-white shadow-md transform scale-105`
-                    : `${bg} ${text} hover:shadow-sm hover:scale-102`
-                  }
+                  ? `bg-gradient-to-r ${gradient} text-white shadow-md transform scale-105`
+                  : `${bg} ${text} hover:shadow-sm hover:scale-102`
+                }
                 `}
-              >
-                <Icon size={16} strokeWidth={2.5} />
-                {label}
-              </button>
-            );
-          })}
-        </div>
+            >
+              <Icon size={16} strokeWidth={2.5} />
+              {label}
+            </button>
+          );
+        })}
       </div>
+    </div>
+  );
+};
 
-      {/* Priority Filter */}
-      <div>
-        <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">
-          Priority
-        </label>
-        <div className="flex flex-col gap-2">
-          {[
-            { value: Priority.LOW, label: 'Low', icon: Flag, gradient: 'from-emerald-400 to-teal-500', bg: 'bg-emerald-100 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300' },
-            { value: Priority.MEDIUM, label: 'Medium', icon: Flag, gradient: 'from-amber-400 to-orange-500', bg: 'bg-amber-100 dark:bg-amber-500/20', text: 'text-amber-700 dark:text-amber-300' },
-            { value: Priority.HIGH, label: 'High', icon: Flag, gradient: 'from-rose-500 to-red-600', bg: 'bg-rose-100 dark:bg-rose-500/20', text: 'text-rose-700 dark:text-rose-300' },
-          ].map(({ value, label, icon: Icon, gradient, bg, text }) => {
-            const isActive = filter.priority?.includes(value);
-            return (
-              <button
-                key={value}
-                onClick={() => {
-                  const current = filter.priority || [];
-                  setFilter({
-                    priority: current.includes(value)
-                      ? current.filter((p) => p !== value)
-                      : [...current, value],
-                  });
-                }}
-                className={`
+export const PriorityFilter = () => {
+  const { filter, setFilter } = useTodoStore();
+  const hasActiveFilters = (filter.priority?.length ?? 0) > 0;
+
+  return (
+    <div className="bg-white/80 dark:bg-[#0a0a0a]/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 dark:border-amber-500/20 shadow-soft">
+      <FilterSectionHeader
+        title="Priority"
+        onClear={() => setFilter({ priority: [] })}
+        hasActiveFilters={hasActiveFilters}
+      />
+      <div className="flex flex-col gap-2">
+        {[
+          { value: Priority.LOW, label: 'Low', icon: Flag, gradient: 'from-emerald-400 to-teal-500', bg: 'bg-emerald-100 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300' },
+          { value: Priority.MEDIUM, label: 'Medium', icon: Flag, gradient: 'from-amber-400 to-orange-500', bg: 'bg-amber-100 dark:bg-amber-500/20', text: 'text-amber-700 dark:text-amber-300' },
+          { value: Priority.HIGH, label: 'High', icon: Flag, gradient: 'from-rose-500 to-red-600', bg: 'bg-rose-100 dark:bg-rose-500/20', text: 'text-rose-700 dark:text-rose-300' },
+        ].map(({ value, label, icon: Icon, gradient, bg, text }) => {
+          const isActive = filter.priority?.includes(value);
+          return (
+            <button
+              key={value}
+              onClick={() => {
+                const current = filter.priority || [];
+                setFilter({
+                  priority: current.includes(value)
+                    ? current.filter((p) => p !== value)
+                    : [...current, value],
+                });
+              }}
+              className={`
                   w-full px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-3
                   ${isActive
-                    ? `bg-gradient-to-r ${gradient} text-white shadow-md transform scale-105`
-                    : `${bg} ${text} hover:shadow-sm hover:scale-102`
-                  }
+                  ? `bg-gradient-to-r ${gradient} text-white shadow-md transform scale-105`
+                  : `${bg} ${text} hover:shadow-sm hover:scale-102`
+                }
                 `}
-              >
-                <Icon size={16} strokeWidth={2.5} />
-                {label}
-              </button>
-            );
-          })}
-        </div>
+            >
+              <Icon size={16} strokeWidth={2.5} />
+              {label}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -216,9 +231,11 @@ export const CategoryFilter = () => {
   return (
     <div className="bg-white/80 dark:bg-[#0a0a0a]/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 dark:border-amber-500/20 shadow-soft">
       <div>
-        <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">
-          Categories
-        </label>
+        <FilterSectionHeader
+          title="Categories"
+          onClear={() => setFilter({ categoryId: undefined })}
+          hasActiveFilters={!!filter.categoryId}
+        />
         <div className="flex flex-col gap-1.5">
           {/* All Categories Button */}
           <button
@@ -467,21 +484,12 @@ export const TagFilter = () => {
   return (
     <div className="bg-white/80 dark:bg-[#0a0a0a]/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 dark:border-amber-500/20 shadow-soft mt-6">
       <div>
-        <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">
-          Tags
-        </label>
+        <FilterSectionHeader
+          title="Tags"
+          onClear={() => setFilter({ tagId: undefined })}
+          hasActiveFilters={!!filter.tagId}
+        />
         <div className="flex flex-col gap-1.5">
-          {/* All Tags Button - Clear tag filter */}
-          {filter.tagId && (
-            <button
-              onClick={() => setFilter({ tagId: undefined })}
-              className="w-full px-3 py-2 rounded-xl text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-red-500 flex items-center justify-center gap-2 mb-2"
-            >
-              <X size={14} />
-              Clear Tag Filter
-            </button>
-          )}
-
           {/* Individual Tag Buttons */}
           {tags.map((tag) => {
             const isActive = filter.tagId === tag.id;
