@@ -5,6 +5,10 @@ import { Todo, TodoFilter, Category, Tag, TodoStatus, TodoStats } from '../inter
 //! zustand kullanarak global state yönetimi yapıyoruz
 //? redux'a göre daha basit, boilerplate kod yazmana gerek yok
 
+type TodoImportInput = Omit<Todo, 'id' | 'position' | 'createdAt' | 'updatedAt'> & {
+  createdAt?: Date | string | number;
+};
+
 interface TodoState {
   // durum değişkenleri - state
   todos: Todo[];                 // tüm todolar bu dizide tutulur
@@ -42,7 +46,7 @@ interface TodoState {
   reorderTodos: (startIndex: number, endIndex: number) => void;
 
   // dışarıdan veri aktarma
-  importTodos: (todos: Todo[]) => void;
+  importTodos: (todos: TodoImportInput[]) => void;
 
   // istatistikler
   getStats: () => TodoStats;
@@ -203,7 +207,13 @@ export const useTodoStore = create<TodoState>()(
           ...todo,
           id: crypto.randomUUID(),                    // yeni id ver, çakışma olmasın
           position: currentLength + index,            // mevcut todoların sonuna ekle
-          createdAt: new Date(todo.createdAt || new Date()),
+          createdAt: (() => {
+            const raw = todo.createdAt;
+            if (!raw) return new Date();
+            if (raw instanceof Date) return raw;
+            const d = new Date(String(raw));
+            return Number.isNaN(d.getTime()) ? new Date() : d;
+          })(),
           updatedAt: new Date(),
         }));
         set((state) => ({ todos: [...state.todos, ...newTodos] }));

@@ -1,90 +1,75 @@
-# 🚀 ProTodo App - Modern Görev Yönetim Uygulaması
+# ProTodo
 
-Bu proje, **TNC Group Figma & Web Geliştirme Eğitimi** kapsamında, eğitim sürecinde edinilen **HTML, CSS, Javascript ve ReactJS** bilgilerinin pekiştirilmesi amacıyla geliştirilmiş modern bir Todo (Yapılacaklar Listesi) uygulamasıdır.
+Modern, hızlı ve kullanımı keyifli bir görev yönetim uygulaması. Kategori ve etiket sistemi, gelişmiş filtreleme, arama, sürükle bırak sıralama, kalıcı depolama ve JSON/CSV içe dışa aktarma ile “basit todo”nun ötesine geçer.
 
-Yönergede belirtilen temel gereksinimlerin ötesine geçilerek, gerçek dünya senaryolarına uygun, kullanıcı deneyimi (UX) yüksek ve modern teknolojilerle donatılmış bir uygulama hedeflenmiştir.
+## Ekran Goruntuleri
 
----
+<p align="center">
+  <img alt="ProTodo - Ana ekran" src="./Screenshot%202026-02-10%20at%2013.56.47.png" width="840" />
+</p>
 
-## 🎯 Proje Amacı ve Kapsamı
+<p align="center">
+  <img alt="ProTodo - Filtreler ve aksiyonlar" src="./Screenshot%202026-02-10%20at%2014.11.16.png" width="840" />
+</p>
 
-Eğitim yönergesine uygun olarak aşağıdaki temel yetenekler kazanılmış ve projeye uygulanmıştır:
-*   Modern Javascript Framework (ReactJS) kullanımı.
-*   Modüler dosya yapısı (**Components**, **Pages**, **Interfaces**).
-*   Modern CSS Framework (**Tailwind CSS**) entegrasyonu.
-*   Tam kapsamlı **CRUD** (Oluşturma, Okuma, Güncelleme, Silme) işlemleri.
+## Ozellikler
 
-## ✨ Öne Çıkan Özellikler
+- CRUD: Ekle, duzenle, sil, tamamla.
+- Durum ve oncelik: `pending`, `in_progress`, `completed` ile akisa uygun takip.
+- Etiket ve kategori: Renkli kategori/etiket yonetimi, filtreleme.
+- Arama: Baslik, aciklama ve etiket adlarinda anlik arama.
+- Drag and drop: Listeyi surukleyerek siralama (dnd-kit).
+- Kalici veri: Zustand `persist` ile localStorage.
+- Import/export: JSON ve CSV ile yedekleme ve tasima.
 
-Bu proje standart bir Todo uygulamasından fazlasını sunar:
+## Teknoloji Yigini
 
-*   **⚡️ Gelişmiş Görev Yönetimi (CRUD):** Görev ekleme, düzenleme, silme ve tamamlama.
-*   **🏷️ Etiket (Tag) ve Kategori Sistemi:** Kategorilere ve etiketlere göre renklendirilmiş, detaylı organizasyon.
-*   **🔍 Akıllı Arama ve Filtreleme:** Başlık, açıklama veya etikete göre anlık arama; Durum (Bekliyor, Devam Ediyor, Tamamlandı) ve Önceliğe göre filtreleme.
-*   **🖱️ Sürükle & Bırak (Drag & Drop):** Görevleri sürükleyerek kolayca sıralama imkanı.
-*   **🌓 Dark/Light Mod:** Sistem tercihinize veya manuel seçiminize duyarlı karanlık mod desteği.
-*   **💾 Kalıcı Hafıza (LocalStorage):** Sayfa yenilendiğinde verileriniz kaybolmaz.
-*   **🎨 Modern ve Duyarlı Arayüz:** Animasyonlu geçişler (Framer Motion), responsive tasarım ve şık ikon setleri.
-*   **⏯️ Hızlı Aksiyonlar:** Listeden ayrılmadan görevleri "Başlat/Durdur" (Play/Pause) özellikleri.
-*   **📂 İçe/Dışa Aktarma:** Verilerinizi JSON veya CSV formatında yedekleyebilme.
+- React + TypeScript + Vite
+- Tailwind CSS
+- Zustand (persist)
+- Framer Motion
+- React Hook Form + Zod
+- Papaparse (CSV)
+- Lucide Icons
 
-## 🛠️ Kullanılan Teknolojiler
-
-Proje geliştirilirken güncel ve popüler teknoloji yığını seçilmiştir:
-
-*   **Core:** React 18, TypeScript, Vite
-*   **Styling:** Tailwind CSS
-*   **State Management:** Zustand (Persist Middleware ile)
-*   **Animations:** Framer Motion
-*   **Icons:** Lucide React
-*   **Form Handling:** React Hook Form & Zod
-*   **Utils:** clsx, tailwind-merge, date-fns
-
-## 📂 Proje Yapısı
-
-Yönergeye uygun olarak düzenli bir klasör yapısı oluşturulmuştur:
+## Proje Yapisi
 
 ```bash
 src/
-├── components/     # UI bileşenleri (Button, Modal, Input vb.)
-│   ├── common/     # Genel kullanımlı bileşenler
-│   ├── layout/     # Header, Layout bileşenleri
-│   └── todo/       # Todo'ya özgü bileşenler (List, Item, Form, Filter)
-├── interfaces/     # TypeScript tip tanımları (todo.types.ts)
-├── pages/          # Sayfa bileşenleri (HomePage, NotFoundPage)
-├── store/          # Zustand durum yönetimi (todoStore.ts)
-└── utils/          # Yardımcı fonksiyonlar
+  components/
+    common/
+    layout/
+    todo/
+  interfaces/
+  pages/
+  store/
+  utils/
 ```
 
-## 🚀 Kurulum ve Çalıştırma
+## Kurulum
 
-Projeyi yerel ortamınızda çalıştırmak için:
+```bash
+npm install
+```
 
-1.  Projeyi klonlayın:
-    ```bash
-    git clone https://github.com/kullaniciadi/protodo-app.git
-    cd protodo-app
-    ```
+## Calistirma
 
-2.  Bağımlılıkları yükleyin:
-    ```bash
-    npm install
-    ```
+```bash
+npm run dev
+```
 
-3.  Geliştirme sunucusunu başlatın:
-    ```bash
-    npm run dev
-    ```
+## Build ve Kontrol
 
-## ✅ Proje Çıktıları (Checklist)
+```bash
+npm run lint
+npm run build
+```
 
-*   [x] Html temelleri uygulandı.
-*   [x] Tailwind CSS ile modern tasarım kodlandı.
-*   [x] Javascript/TypeScript temelleri ile mantıksal kurgu yapıldı.
-*   [x] ReactJS kütüphanesi component yapısında kullanıldı.
-*   [x] CRUD (Ekle, Sil, Güncelle, Listele) işlemleri sorunsuz çalışıyor.
-*   [x] Github üzerine yüklendi.
+## Import/Export Notlari
 
----
+- CSV import/export `papaparse` ile yapilir.
+- CSV export, Excel/Sheets tarafinda formula injection riskine karsi belirli baslangic karakterlerini (`=`, `+`, `-`, `@`) otomatik olarak sanitize eder.
 
-**Geliştirici Notu:** Bu proje, sadece bir ödev teslimi değil, aynı zamanda temiz kod (clean code) prensipleri, performans optimizasyonları ve kullanıcı deneyimi gözetilerek hazırlanmış profesyonel bir portfolyo çalışmasıdır.
+## Lisans
+
+Egitim ve portfolyo amacli ornek calisma.

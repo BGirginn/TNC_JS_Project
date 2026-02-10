@@ -76,10 +76,11 @@ const HomePage = () => {
         status: todo.status || TodoStatus.PENDING,
         categoryId: todo.categoryId,
         tags: todo.tags || [],
+        createdAt: todo.createdAt,
       }));
 
       // store'a ekle
-      importTodos(todosToAdd as Parameters<typeof importTodos>[0]);
+      importTodos(todosToAdd);
       toast.success(`Imported ${importedTodos.length} todos`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to import');
@@ -126,18 +127,18 @@ const HomePage = () => {
                 <motion.div
                   initial={{ opacity: 0, y: -10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  className="absolute right-0 mt-2 w-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 py-1 z-20 overflow-hidden"
+                  className="absolute right-0 mt-2 w-40 bg-gray-900/95 backdrop-blur-xl rounded-xl shadow-xl border border-white/10 py-1 z-20 overflow-hidden"
                 >
                   <button
                     onClick={() => handleExport('json')}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700/50 flex items-center gap-2 transition-colors"
+                    className="w-full px-3 py-2 text-left text-sm text-white/90 hover:text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
                   >
                     <FileJson size={14} className="text-blue-500" />
                     JSON
                   </button>
                   <button
                     onClick={() => handleExport('csv')}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700/50 flex items-center gap-2 transition-colors"
+                    className="w-full px-3 py-2 text-left text-sm text-white/90 hover:text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
                   >
                     <FileSpreadsheet size={14} className="text-emerald-500" />
                     CSV
